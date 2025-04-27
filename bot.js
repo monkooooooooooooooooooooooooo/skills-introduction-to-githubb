@@ -48,3 +48,4 @@ client.on('messageCreate', async message => {
 });
 
 client.login(token);
+const scanner = require('./scanner.js');
