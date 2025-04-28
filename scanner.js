@@ -173,3 +173,4 @@ if (message.content.startsWith('!scan')) {
 
   await message.reply('Scan complete.');
 }
+module.exports = scanUsers;
