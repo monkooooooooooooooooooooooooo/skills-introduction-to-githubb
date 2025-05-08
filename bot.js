@@ -1,43 +1,14 @@
 const { Client, GatewayIntentBits } = require('discord.js');
-// No need to import token from config.json anymore
+const scanUsers = require('./scanner.js'); // Make sure this file exists
+
+const token = process.env.DISCORD_TOKEN; // Make sure this is set in Render or GitHub Secrets
 
 const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent
-    ]
-});
-
-client.once('ready', () => {
-    console.log(`Logged in as ${client.user.tag}`);
-});
-
-client.on('messageCreate', async (message) => {
-    if (message.content === "!ping") {
-        await message.reply("Pong!");
-    }
-
-    if (message.content.startsWith('!scan')) {
-        await message.reply('Starting scan...');
-        
-        // You would call your scanner function here
-        // Example: await startScan();
-
-        await message.reply('Scan complete.');
-    }
-});
-
-// Get token from environment variables (GitHub Secrets)
-const token = process.env.DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
-client.login(token);
-const { Client, GatewayIntentBits } = require('discord.js');
-const scanUsers = require('./scanner.js'); // Your scanner script
-
-const token = process.env.DISCORD_TOKEN; // GitHub Actions / GitHub Secrets injects this
-
-const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent
+  ]
 });
 
 client.once('ready', () => {
@@ -65,10 +36,14 @@ client.on('messageCreate', async (message) => {
       message.reply('Error occurred during scanning.');
     }
   }
+
+  if (message.content === '!ping') {
+    await message.reply('Pong!');
+  }
 });
 
 if (!token) {
-  console.error('DISCORD_TOKEN is not set! Did you configure GitHub Secrets correctly?');
+  console.error('DISCORD_TOKEN is not set!');
   process.exit(1);
 }
 
